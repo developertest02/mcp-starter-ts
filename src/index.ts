@@ -26,19 +26,29 @@ server.resource(
     ],
   })
 );
-
+server.tool("echo", async () => ({
+  content: [{ type: "text", text: "hello from tool" }],
+}));
 // Add an addition tool
 server.tool("add", { a: z.number(), b: z.number() }, async ({ a, b }) => ({
   content: [{ type: "text", text: String(a + b) }],
 }));
 
-server.prompt("review-code", { code: z.string() }, ({ code }) => ({
+server.tool(
+  "add_Again",
+  { a: z.number(), b: z.number() },
+  async ({ a, b }) => ({
+    content: [{ type: "text", text: String(a + b) }],
+  })
+);
+
+server.prompt("getmy-bigdogs", { snarf: z.string() }, ({ snarf }) => ({
   messages: [
     {
       role: "user",
       content: {
         type: "text",
-        text: `Please review this code:\n\n${code}`,
+        text: `Please review this code:\n\n${snarf}`,
       },
     },
   ],
